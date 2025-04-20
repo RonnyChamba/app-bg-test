@@ -13,6 +13,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegistreformComponent } from './pages/clientes/components/registreform/registreform.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { UsuarioFormComponent } from './pages/usuarios/components/usuario-form/usuario-form.component';
+import { UsuarioListComponent } from './pages/usuarios/components/usuario-list/usuario-list.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
     ClientesComponent,
     RegistreformComponent,
     UsuariosComponent,
+    UsuarioFormComponent,
+    UsuarioListComponent,
   ],
   imports: [
     BrowserModule,
