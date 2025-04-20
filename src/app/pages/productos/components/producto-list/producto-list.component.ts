@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, debounceTime, distinctUntilChanged, of, tap } from 'rxjs';
 import { GenericResponse } from 'src/app/model/generic-response.model';
 import { ProductRespDTO } from 'src/app/model/response/product-respdto.mode';
 import { ProductoService } from 'src/app/services/producto.service';
+import { ProductoFormComponent } from '../producto-form/producto-form.component';
 
 @Component({
   selector: 'app-producto-list',
@@ -14,7 +16,9 @@ export class ProductoListComponent {
 
   products: ProductRespDTO[] = [];
   searchControl = new FormControl('');
-  constructor(private readonly productService: ProductoService
+  constructor(private readonly productService: ProductoService,
+        private readonly modalService: NgbModal
+    
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +63,17 @@ export class ProductoListComponent {
     this.getProducts();
   }
 
+    onClickOpenModalEdit(productRespDTO: ProductRespDTO) {
+      const modalRef = this.modalService.open(ProductoFormComponent, { centered: true, size: 'lg', backdrop: 'static' });
+      modalRef.componentInstance.productEdit = productRespDTO;
+      modalRef.result.then((result) => {
+        if (result === 'OK') {
+          this.getProducts();
+        }
+      }).catch((error) => {
+        console.log('Modal cerrado sin acción:', error);
+      });
+    }
   onClickDelete(productRespDTO: ProductRespDTO) {
 
     if (confirm(`¿Está seguro de eliminar el producto ${productRespDTO.description}?`)) {

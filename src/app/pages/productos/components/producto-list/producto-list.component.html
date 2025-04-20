@@ -27,7 +27,7 @@
             </td>
             <td>{{ product.createAt | date: 'dd/MM/yyyy' }}</td>
             <td>
-               
+                <button class="btn btn-warning" (click)="onClickOpenModalEdit(product)">Editar</button>
                 <button class="btn btn-danger" (click)="onClickDelete(product)">Eliminar</button>
             </td>
 

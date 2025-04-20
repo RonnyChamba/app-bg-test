@@ -28,6 +28,15 @@ export class ProductoService {
     return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/products`, request);
   }
 
+  updateProduct(data: ProductReqDTO, id: number): Observable<GenericResponse<string>> {
+  
+      const request = {
+        origin: 'AppAngular',
+        payload: data
+      };
+      return this.httpClient.put<GenericResponse<string>>(`${this.urlMicro}/products/${id}`, request);
+    }
+
   deleteProduct(id: number): Observable<GenericResponse<string>> {
     return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/products/${id}`);
   }
