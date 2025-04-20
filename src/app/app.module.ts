@@ -15,6 +15,7 @@ import { RegistreformComponent } from './pages/clientes/components/registreform/
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { UsuarioFormComponent } from './pages/usuarios/components/usuario-form/usuario-form.component';
 import { UsuarioListComponent } from './pages/usuarios/components/usuario-list/usuario-list.component';
+import { ChangePasswordComponent } from './pages/usuarios/components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { UsuarioListComponent } from './pages/usuarios/components/usuario-list/u
     UsuariosComponent,
     UsuarioFormComponent,
     UsuarioListComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

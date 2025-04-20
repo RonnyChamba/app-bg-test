@@ -6,6 +6,7 @@ import { GenericResponse } from 'src/app/model/generic-response.model';
 import { UsuarioRespDTO } from 'src/app/model/response/user-respdto.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UsuarioFormComponent } from '../usuario-form/usuario-form.component';
+import { ChangePasswordComponent } from '../change-password/change-password.component';
 
 @Component({
   selector: 'app-usuario-list',
@@ -60,36 +61,49 @@ export class UsuarioListComponent {
   }
 
   onClickDelete(customer: UsuarioRespDTO) {
-  
-      // console.log('onClickDelete', customer);
-      if (confirm(`¿Está seguro de eliminar al usuario ${customer.names} ${customer.lasName}?`)) {
-        this.userService.deleteUser(customer.id)
-          .pipe(
-            tap((response: GenericResponse<string>) => {
-              console.log('Response:', response);
-              alert('Usuario eliminado exitosamente');
-              this.getUsers();
-            }),
-            catchError((error) => {
-              console.error('Error al eliminar el usuario', error);
-              alert('Error al eliminar el usuario');
-              return of(null);
-            })
-          ).subscribe();
-      }
-    }
 
-    onClickOpenModalEdit(customer: UsuarioRespDTO) {
-        // console.log('onClickOpenModalEdit', customer);
-        const modalRef = this.modalService.open(UsuarioFormComponent, { centered: true, size: 'lg', backdrop: 'static' });
-        modalRef.componentInstance.userEdit = customer;
-        modalRef.result.then((result) => {
-          if (result === 'OK') {
+    // console.log('onClickDelete', customer);
+    if (confirm(`¿Está seguro de eliminar al usuario ${customer.names} ${customer.lasName}?`)) {
+      this.userService.deleteUser(customer.id)
+        .pipe(
+          tap((response: GenericResponse<string>) => {
+            console.log('Response:', response);
+            alert('Usuario eliminado exitosamente');
             this.getUsers();
-          }
-        }).catch((error) => {
-          console.log('Modal cerrado sin acción:', error);
-        });
+          }),
+          catchError((error) => {
+            console.error('Error al eliminar el usuario', error);
+            alert('Error al eliminar el usuario');
+            return of(null);
+          })
+        ).subscribe();
+    }
+  }
+
+  onClickOpenModalEdit(customer: UsuarioRespDTO) {
+    // console.log('onClickOpenModalEdit', customer);
+    const modalRef = this.modalService.open(UsuarioFormComponent, { centered: true, size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.userEdit = customer;
+    modalRef.result.then((result) => {
+      if (result === 'OK') {
+        this.getUsers();
       }
+    }).catch((error) => {
+      console.log('Modal cerrado sin acción:', error);
+    });
+  }
+
+
+  onClickOpenModalPass(userRespDTO: UsuarioRespDTO) {
+    const modalRef = this.modalService.open(ChangePasswordComponent, { centered: true, size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.userEdit = userRespDTO;
+    modalRef.result.then((result) => {
+      if (result === 'OK') {
+        // this.getUsers();
+      }
+    }).catch((error) => {
+      console.log('Modal cerrado sin acción:', error);
+    });
+  }
 
 }

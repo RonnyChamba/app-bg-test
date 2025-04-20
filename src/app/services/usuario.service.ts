@@ -29,15 +29,24 @@ export class UsuarioService {
   }
 
   updateUser(data: UsuarioReqDTO, id: number): Observable<GenericResponse<string>> {
-  
-      const request = {
-        origin: 'AppAngular',
-        payload: data
-      };
-      return this.httpClient.patch<GenericResponse<string>>(`${this.urlMicro}/users/${id}`, request);
-    }
 
-  deleteUser(id: number): Observable<GenericResponse<string>> { 
+    const request = {
+      origin: 'AppAngular',
+      payload: data
+    };
+    return this.httpClient.patch<GenericResponse<string>>(`${this.urlMicro}/users/${id}`, request);
+  }
+
+  changePasswordUser(newPassword: string, id: number): Observable<GenericResponse<string>> {
+
+    const request = {
+      origin: 'AppAngular',
+      payload: newPassword
+    };
+    return this.httpClient.patch<GenericResponse<string>>(`${this.urlMicro}/users/update-passsword/${id}`, request);
+  }
+
+  deleteUser(id: number): Observable<GenericResponse<string>> {
     return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/users/${id}`);
   }
 }

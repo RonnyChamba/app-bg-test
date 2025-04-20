@@ -28,6 +28,7 @@
             <td>{{ cliente.createAt | date: 'dd/MM/yyyy' }}</td>
             <td>
                 <button class="btn btn-warning" (click)="onClickOpenModalEdit(cliente)">Editar</button>
+                <button class="btn btn-gray" (click)="onClickOpenModalPass(cliente)">Config</button>
                 <button class="btn btn-danger" (click)="onClickDelete(cliente)">Eliminar</button>
         </tr>
 
