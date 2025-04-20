@@ -28,6 +28,15 @@ export class UsuarioService {
     return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/users`, request);
   }
 
+  updateUser(data: UsuarioReqDTO, id: number): Observable<GenericResponse<string>> {
+  
+      const request = {
+        origin: 'AppAngular',
+        payload: data
+      };
+      return this.httpClient.patch<GenericResponse<string>>(`${this.urlMicro}/users/${id}`, request);
+    }
+
   deleteUser(id: number): Observable<GenericResponse<string>> { 
     return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/users/${id}`);
   }

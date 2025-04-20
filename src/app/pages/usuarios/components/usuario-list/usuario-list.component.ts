@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, debounceTime, distinctUntilChanged, of, tap } from 'rxjs';
 import { GenericResponse } from 'src/app/model/generic-response.model';
 import { UsuarioRespDTO } from 'src/app/model/response/user-respdto.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { UsuarioFormComponent } from '../usuario-form/usuario-form.component';
 
 @Component({
   selector: 'app-usuario-list',
@@ -14,7 +16,9 @@ export class UsuarioListComponent {
 
   customers: UsuarioRespDTO[] = [];
   searchControl = new FormControl('');
-  constructor(private readonly userService: UsuarioService) { }
+  constructor(private readonly userService: UsuarioService,
+    private readonly modalService: NgbModal
+  ) { }
   ngOnInit(): void {
     this.getUsers();
     this.applyFilter();
@@ -74,5 +78,18 @@ export class UsuarioListComponent {
           ).subscribe();
       }
     }
+
+    onClickOpenModalEdit(customer: UsuarioRespDTO) {
+        // console.log('onClickOpenModalEdit', customer);
+        const modalRef = this.modalService.open(UsuarioFormComponent, { centered: true, size: 'lg', backdrop: 'static' });
+        modalRef.componentInstance.userEdit = customer;
+        modalRef.result.then((result) => {
+          if (result === 'OK') {
+            this.getUsers();
+          }
+        }).catch((error) => {
+          console.log('Modal cerrado sin acción:', error);
+        });
+      }
 
 }
