@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title">Registro de Clientes</h5>
+        <button type="button" class="btn-close" aria-label="Close"  (click)="activeModal.dismiss()"></button>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Nombre completo</label>
+              <input type="text" class="form-control" id="fullName" formControlName="fullName">
+              <div class="text-danger" *ngIf="customerForm.get('fullName')?.touched && customerForm.get('fullName')?.invalid">
+                El nombre es obligatorio
+              </div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="cellPhone" class="form-label">Teléfono</label>
+              <input type="text" class="form-control" id="cellPhone" formControlName="cellPhone">
+              <div class="text-danger" *ngIf="customerForm.get('cellPhone')?.touched && customerForm.get('cellPhone')?.invalid">
+                Teléfono inválido
+              </div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="email" class="form-label">Correo electr&oacute;nico</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+              <div class="text-danger" *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid">
+                Correo inválido
+              </div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="address" class="form-label">Direcci&oacute;n</label>
+              <input type="text" class="form-control" id="address" formControlName="address">
+              <div class="text-danger" *ngIf="customerForm.get('address')?.touched && customerForm.get('address')?.invalid">
+                Dirección obligatoria
+              </div>
+            </div>
+          
+            <button type="submit" class="btn btn-primary" [disabled]="!customerForm.valid" >Guardar</button>
+          </form>
+    </div>
+    
+      
+    
+</div>
+

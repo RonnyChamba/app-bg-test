@@ -11,6 +11,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RegistreformComponent } from './pages/clientes/components/registreform/registreform.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HomeComponent,
     NavbarComponent,
     ClientesComponent,
+    RegistreformComponent,
   ],
   imports: [
     BrowserModule,

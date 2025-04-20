@@ -5,6 +5,7 @@ import { catchError, debounceTime, distinctUntilChanged, filter, of, tap } from 
 import { CustomerRespDTO } from 'src/app/model/customer.mode';
 import { GenericResponse } from 'src/app/model/generic-response.model';
 import { ClienteService } from 'src/app/services/cliente.service';
+import { RegistreformComponent } from './components/registreform/registreform.component';
 
 @Component({
   selector: 'app-clientes',
@@ -57,11 +58,18 @@ export class ClientesComponent {
       });
   }
 
-  onClikOpenModalCreate(){
+  async onClikOpenModalCreate() {
     console.log('onClikOpenModalCreate');
-    const modalRef = this.modalService.open('modalCreate', { centered: true, size: 'lg' });
-    modalRef.componentInstance.name = 'World';
-    modalRef.componentInstance.closeBtnName = 'Close';
-    modalRef.componentInstance.title = 'Crear cliente';
+    const modalRef = this.modalService.open(RegistreformComponent, { centered: true, size: 'lg', backdrop: 'static' });
+    try {
+      const result = await modalRef.result;
+      console.log('Response modal:', result);
+      if (result === 'OK') {
+        this.getCustomers();
+      } 
+    }catch (error) {
+      console.log('Modal cerrado sin acción:', error);
+    }
+  
   }
 }
