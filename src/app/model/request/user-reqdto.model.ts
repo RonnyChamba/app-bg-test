@@ -6,3 +6,9 @@ export interface UsuarioReqDTO {
     rol: string;
   }
   
+  export interface CompanyReqDTO {
+    fullName: string;
+    porcentajeIva: number;
+    city: string;
+    userReqDTO: UsuarioReqDTO;
+  }

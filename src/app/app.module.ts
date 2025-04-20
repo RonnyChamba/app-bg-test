@@ -19,6 +19,7 @@ import { ChangePasswordComponent } from './pages/usuarios/components/change-pass
 import { ProductosComponent } from './pages/productos/productos.component';
 import { ProductoListComponent } from './pages/productos/components/producto-list/producto-list.component';
 import { ProductoFormComponent } from './pages/productos/components/producto-form/producto-form.component';
+import { CompanyFormComponent } from './auth/components/company-form/company-form.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ProductoFormComponent } from './pages/productos/components/producto-for
     ProductosComponent,
     ProductoListComponent,
     ProductoFormComponent,
+    CompanyFormComponent,
   ],
   imports: [
     BrowserModule,

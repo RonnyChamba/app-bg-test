@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="card mt-2">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="card-title">{{titleForm}}</h5>
+      <span><a href="/login">Ir al Login</a></span>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="customerForm" (ngSubmit)="saveUser()">
+        <div class="card mb-3">
+          <div class="card-header bg-primary text-white">
+            Información de la Empresa
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Nombre Comercial</label>
+              <input type="text" class="form-control" formControlName="fullName">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Porcentaje IVA</label>
+              <input type="number" class="form-control" formControlName="porcentajeIva">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Ciudad</label>
+              <input type="text" class="form-control" formControlName="city">
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header bg-secondary text-white">
+            Información del Usuario
+          </div>
+          <div class="card-body" formGroupName="userReqDTO">
+            <div class="mb-3">
+              <label class="form-label">Nombres</label>
+              <input type="text" class="form-control" formControlName="names">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Apellidos</label>
+              <input type="text" class="form-control" formControlName="lasName">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Usuario</label>
+              <input type="text" class="form-control" formControlName="username">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Contraseña</label>
+              <input type="password" class="form-control" formControlName="password">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Correo</label>
+              <input type="email" class="form-control" formControlName="email">
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end">
+          <button type="submit" class="btn btn-success" [disabled]="customerForm.invalid">
+            {{ buttonText }}
+          </button>
+        </div>
+      </form>
+
+
+    </div>
+
+
+
+  </div>
+
+</div>
