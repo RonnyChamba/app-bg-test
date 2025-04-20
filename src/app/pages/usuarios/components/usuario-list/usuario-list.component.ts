@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { catchError, of, tap } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { catchError, debounceTime, distinctUntilChanged, of, tap } from 'rxjs';
 import { GenericResponse } from 'src/app/model/generic-response.model';
 import { UsuarioRespDTO } from 'src/app/model/response/user-respdto.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -12,13 +13,12 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class UsuarioListComponent {
 
   customers: UsuarioRespDTO[] = [];
-
+  searchControl = new FormControl('');
   constructor(private readonly userService: UsuarioService) { }
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.getUsers();
+    this.applyFilter();
   }
-
-
   getUsers(filter: string = ''): void {
     this.userService.getUsers(filter)
       .pipe(
@@ -27,11 +27,28 @@ export class UsuarioListComponent {
           this.customers = response.data;
         }),
         catchError((error) => {
-          console.error('Error fetching customers', error);
+          console.error('Error fetching users', error);
           return of(null);
         }
         )
       ).subscribe();
+  }
+  applyFilter(): void {
+
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300), // espera 300ms después de dejar de escribir
+        distinctUntilChanged() // solo si cambia el valor
+      )
+      .subscribe(value => {
+        const input = value?.trim() ?? '';
+
+        if (input.length === 0) {
+          this.getUsers();
+        } else if (input.length >= 3) {
+          this.getUsers(input);
+        }
+      });
   }
 
 }
