@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { catchError, of, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -13,7 +14,8 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
   constructor(private readonly authService: AuthService,
-    private readonly TokenService: TokenService,
+    private readonly tokenService: TokenService,
+    private readonly router: Router,
               private readonly fb: FormBuilder
 
   ) { }
@@ -39,7 +41,8 @@ export class LoginComponent {
       .pipe(
         tap((response) => {
           if (response && response.data) {
-            this.TokenService.setToken(response.data);
+            this.tokenService.setToken(response.data);
+            this.router.navigate(['/home']);
           } else {
             console.error('Token not found in response');
             alert('Login failed: Token not found');
