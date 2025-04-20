@@ -55,4 +55,24 @@ export class UsuarioListComponent {
     this.getUsers();
   }
 
+  onClickDelete(customer: UsuarioRespDTO) {
+  
+      // console.log('onClickDelete', customer);
+      if (confirm(`¿Está seguro de eliminar al usuario ${customer.names} ${customer.lasName}?`)) {
+        this.userService.deleteUser(customer.id)
+          .pipe(
+            tap((response: GenericResponse<string>) => {
+              console.log('Response:', response);
+              alert('Usuario eliminado exitosamente');
+              this.getUsers();
+            }),
+            catchError((error) => {
+              console.error('Error al eliminar el usuario', error);
+              alert('Error al eliminar el usuario');
+              return of(null);
+            })
+          ).subscribe();
+      }
+    }
+
 }

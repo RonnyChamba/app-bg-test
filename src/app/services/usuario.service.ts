@@ -12,19 +12,23 @@ import { UsuarioReqDTO } from '../model/request/user-reqdto.model';
 export class UsuarioService {
 
   private urlMicro = environment.urlMicro;
-     constructor(private readonly httpClient: HttpClient) {
-      }
-  
-    getUsers(filter: string): Observable<GenericResponse<UsuarioRespDTO[]>> {
-      return this.httpClient.get<GenericResponse<UsuarioRespDTO[]>>(`${this.urlMicro}/users?name=${filter}`);
-    }
+  constructor(private readonly httpClient: HttpClient) {
+  }
 
-    saveUser(data: UsuarioReqDTO): Observable<GenericResponse<string>> {
-    
-        const request = {
-          origin: 'AppAngular',
-          payload: data
-        };
-        return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/users`, request);
-      }
+  getUsers(filter: string): Observable<GenericResponse<UsuarioRespDTO[]>> {
+    return this.httpClient.get<GenericResponse<UsuarioRespDTO[]>>(`${this.urlMicro}/users?name=${filter}`);
+  }
+
+  saveUser(data: UsuarioReqDTO): Observable<GenericResponse<string>> {
+
+    const request = {
+      origin: 'AppAngular',
+      payload: data
+    };
+    return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/users`, request);
+  }
+
+  deleteUser(id: number): Observable<GenericResponse<string>> { 
+    return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/users/${id}`);
+  }
 }
