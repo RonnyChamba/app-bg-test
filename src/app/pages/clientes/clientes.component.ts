@@ -21,6 +21,7 @@ export class ClientesComponent {
     .pipe(
       tap((response: GenericResponse<CustomerRespDTO[]>) => {
         console.log('response', response);
+        this.customers = response.data;
       }),
       catchError((error) => {
         console.error('Error fetching customers', error);

@@ -18,17 +18,25 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Tel&eacute;fono</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Direcci&oacute;n</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">F. Creaci&oacute;n</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>mdo</td>
+                    <tr *ngFor="let cliente of customers; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ cliente.fullName }}</td>
+                        <td>{{ cliente.cellPhone }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.address }}</td>
+                        <td>
+                            <span class="badge bg-success">{{cliente.status}}</span>
+                        </td>
+                        <td>{{ cliente.createAt | date: 'dd/MM/yyyy' }}</td>
                     </tr>
                     
                 </tbody>
