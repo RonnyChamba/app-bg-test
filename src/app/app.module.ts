@@ -17,6 +17,7 @@ import { UsuarioFormComponent } from './pages/usuarios/components/usuario-form/u
 import { UsuarioListComponent } from './pages/usuarios/components/usuario-list/usuario-list.component';
 import { ChangePasswordComponent } from './pages/usuarios/components/change-password/change-password.component';
 import { ProductosComponent } from './pages/productos/productos.component';
+import { ProductoListComponent } from './pages/productos/components/producto-list/producto-list.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ProductosComponent } from './pages/productos/productos.component';
     UsuarioListComponent,
     ChangePasswordComponent,
     ProductosComponent,
+    ProductoListComponent,
   ],
   imports: [
     BrowserModule,
