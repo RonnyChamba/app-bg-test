@@ -30,6 +30,15 @@ export class ClienteService {
     return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/customers`, request);
   }
 
+  updateCustomer(data: CustomerReqDTO, id: number): Observable<GenericResponse<string>> {
+
+    const request = {
+      origin: 'AppAngular',
+      payload: data
+    };
+    return this.httpClient.put<GenericResponse<string>>(`${this.urlMicro}/customers/${id}`, request);
+  }
+
   deleteCustomer(id: number): Observable<GenericResponse<string>> { 
     return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/customers/${id}`);
   }

@@ -73,7 +73,7 @@ export class ClientesComponent {
   
   }
 
-  onClickDelete(customer: CustomerRespDTO): void {
+  onClickDelete(customer: CustomerRespDTO) {
 
     console.log('onClickDelete', customer);
     if (confirm(`¿Está seguro de eliminar al cliente ${customer.fullName}?`)) {
@@ -91,6 +91,19 @@ export class ClientesComponent {
           })
         ).subscribe();
     }
+  }
+
+  onClickOpenModalEdit(customer: CustomerRespDTO) {
+    console.log('onClickOpenModalEdit', customer);
+    const modalRef = this.modalService.open(RegistreformComponent, { centered: true, size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.customerEdit = customer;
+    modalRef.result.then((result) => {
+      if (result === 'OK') {
+        this.getCustomers();
+      }
+    }).catch((error) => {
+      console.log('Modal cerrado sin acción:', error);
+    });
   }
 
 
