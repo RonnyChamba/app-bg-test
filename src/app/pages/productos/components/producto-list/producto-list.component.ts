@@ -37,21 +37,25 @@ export class ProductoListComponent {
       ).subscribe();
   }
 
-    applyFilter(): void {
-  
-      this.searchControl.valueChanges
-        .pipe(
-          debounceTime(300), // espera 300ms después de dejar de escribir
-          distinctUntilChanged() // solo si cambia el valor
-        )
-        .subscribe(value => {
-          const input = value?.trim() ?? '';
-  
-          if (input.length === 0) {
-            this.getProducts();
-          } else if (input.length >= 3) {
-            this.getProducts(input);
-          }
-        });
-    }
+  applyFilter(): void {
+
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300), // espera 300ms después de dejar de escribir
+        distinctUntilChanged() // solo si cambia el valor
+      )
+      .subscribe(value => {
+        const input = value?.trim() ?? '';
+
+        if (input.length === 0) {
+          this.getProducts();
+        } else if (input.length >= 3) {
+          this.getProducts(input);
+        }
+      });
+  }
+
+  reloadTable(): void {
+    this.getProducts();
+  }
 }

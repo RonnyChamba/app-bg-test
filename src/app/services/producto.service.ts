@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { ProductRespDTO } from '../model/response/product-respdto.mode';
 import { GenericResponse } from '../model/generic-response.model';
 import { Observable } from 'rxjs';
+import { ProductReqDTO } from '../model/request/product-reqdto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,19 @@ import { Observable } from 'rxjs';
 export class ProductoService {
 
   private urlMicro = environment.urlMicro;
-    constructor(private readonly httpClient: HttpClient) {
-    }
-  
-    getProducts(filter: string): Observable<GenericResponse<ProductRespDTO[]>> {
-      return this.httpClient.get<GenericResponse<ProductRespDTO[]>>(`${this.urlMicro}/products?paramFilter=${filter}`);
-    }
+  constructor(private readonly httpClient: HttpClient) {
+  }
+
+  getProducts(filter: string): Observable<GenericResponse<ProductRespDTO[]>> {
+    return this.httpClient.get<GenericResponse<ProductRespDTO[]>>(`${this.urlMicro}/products?paramFilter=${filter}`);
+  }
+
+
+  saveProduct(data: ProductReqDTO): Observable<GenericResponse<string>> {
+    const request = {
+      origin: 'AppAngular',
+      payload: data
+    };
+    return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/products`, request);
+  }
 }
