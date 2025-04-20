@@ -27,4 +27,8 @@ export class ProductoService {
     };
     return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/products`, request);
   }
+
+  deleteProduct(id: number): Observable<GenericResponse<string>> {
+    return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/products/${id}`);
+  }
 }

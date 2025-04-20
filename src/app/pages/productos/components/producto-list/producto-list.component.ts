@@ -58,4 +58,23 @@ export class ProductoListComponent {
   reloadTable(): void {
     this.getProducts();
   }
+
+  onClickDelete(productRespDTO: ProductRespDTO) {
+
+    if (confirm(`¿Está seguro de eliminar el producto ${productRespDTO.description}?`)) {
+      this.productService.deleteProduct(productRespDTO.id)
+        .pipe(
+          tap((response: GenericResponse<string>) => {
+            console.log('Response:', response);
+            alert('Producto eliminado exitosamente');
+            this.getProducts();
+          }),
+          catchError((error) => {
+            console.error('Error al eliminar el producto', error);
+            alert('Error al eliminar el producto');
+            return of(null);
+          })
+        ).subscribe();
+    }
+  }
 }
