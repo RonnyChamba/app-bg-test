@@ -22,6 +22,7 @@
                         <th scope="col">Direcci&oacute;n</th>
                         <th scope="col">Estado</th>
                         <th scope="col">F. Creaci&oacute;n</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,9 @@
                             <span class="badge bg-success">{{cliente.status}}</span>
                         </td>
                         <td>{{ cliente.createAt | date: 'dd/MM/yyyy' }}</td>
+                        <td>
+                            <!-- <button class="btn btn-warning" (click)="onClickOpenModalEdit(cliente)">Editar</button> -->
+                            <button class="btn btn-danger" (click)="onClickDelete(cliente)">Eliminar</button>
                     </tr>
 
                 </tbody>

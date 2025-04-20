@@ -72,4 +72,26 @@ export class ClientesComponent {
     }
   
   }
+
+  onClickDelete(customer: CustomerRespDTO): void {
+
+    console.log('onClickDelete', customer);
+    if (confirm(`¿Está seguro de eliminar al cliente ${customer.fullName}?`)) {
+      this.customerService.deleteCustomer(customer.id)
+        .pipe(
+          tap((response: GenericResponse<string>) => {
+            console.log('Response:', response);
+            alert('Cliente eliminado exitosamente');
+            this.getCustomers();
+          }),
+          catchError((error) => {
+            console.error('Error al eliminar el cliente', error);
+            alert('Error al eliminar el cliente');
+            return of(null);
+          })
+        ).subscribe();
+    }
+  }
+
+
 }

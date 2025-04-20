@@ -29,4 +29,8 @@ export class ClienteService {
     };
     return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/customers`, request);
   }
+
+  deleteCustomer(id: number): Observable<GenericResponse<string>> { 
+    return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/customers/${id}`);
+  }
 }
