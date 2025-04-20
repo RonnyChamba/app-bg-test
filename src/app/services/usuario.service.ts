@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { UsuarioRespDTO } from '../model/response/user-respdto.model';
 import { GenericResponse } from '../model/generic-response.model';
 import { Observable } from 'rxjs';
+import { UsuarioReqDTO } from '../model/request/user-reqdto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,4 +18,13 @@ export class UsuarioService {
     getUsers(filter: string): Observable<GenericResponse<UsuarioRespDTO[]>> {
       return this.httpClient.get<GenericResponse<UsuarioRespDTO[]>>(`${this.urlMicro}/users?name=${filter}`);
     }
+
+    saveUser(data: UsuarioReqDTO): Observable<GenericResponse<string>> {
+    
+        const request = {
+          origin: 'AppAngular',
+          payload: data
+        };
+        return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/users`, request);
+      }
 }

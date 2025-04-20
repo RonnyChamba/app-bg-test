@@ -51,4 +51,8 @@ export class UsuarioListComponent {
       });
   }
 
+  reloadTable(): void {
+    this.getUsers();
+  }
+
 }
