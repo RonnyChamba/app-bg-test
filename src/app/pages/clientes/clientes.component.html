@@ -9,10 +9,8 @@
         <div class="card-body">
 
             <div class="d-flex  justify-content-center align-items-center">
-
-                <input type="text" class="form-control" placeholder="Buscar cliente por nombre"
-                    aria-label="Buscar cliente">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+                <input type="text" class="form-control w-50" placeholder="Buscar cliente por nombre"
+                    aria-label="Buscar cliente" [formControl]="searchControl">
             </div>
             <table class="table">
                 <thead>
@@ -38,7 +36,7 @@
                         </td>
                         <td>{{ cliente.createAt | date: 'dd/MM/yyyy' }}</td>
                     </tr>
-                    
+
                 </tbody>
             </table>
         </div>

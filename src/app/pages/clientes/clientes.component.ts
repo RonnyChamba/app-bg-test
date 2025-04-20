@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { catchError, of, tap } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { catchError, debounceTime, distinctUntilChanged, filter, of, tap } from 'rxjs';
 import { CustomerRespDTO } from 'src/app/model/customer.mode';
 import { GenericResponse } from 'src/app/model/generic-response.model';
 import { ClienteService } from 'src/app/services/cliente.service';
@@ -12,11 +13,15 @@ import { ClienteService } from 'src/app/services/cliente.service';
 export class ClientesComponent {
 
   customers: CustomerRespDTO[] = [];
+  searchControl = new FormControl('');
   constructor(private readonly customerService: ClienteService) { }
+
   ngOnInit(): void {
-    this.getClientes();
+    this.getCustomers();
+    this.applyFilter();
   }
-  getClientes(filter: string = ''): void {
+
+  getCustomers(filter: string = ''): void {
     this.customerService.getClientes(filter)
     .pipe(
       tap((response: GenericResponse<CustomerRespDTO[]>) => {
@@ -29,5 +34,23 @@ export class ClientesComponent {
       }
     )
     ).subscribe();
+  }
+
+  applyFilter(): void {
+
+    this.searchControl.valueChanges
+  .pipe(
+    debounceTime(300), // espera 300ms después de dejar de escribir
+    distinctUntilChanged() // solo si cambia el valor
+  )
+  .subscribe(value => {
+    const input = value?.trim() ?? '';
+
+    if (input.length === 0) {
+      this.getCustomers();
+    } else if (input.length >= 3) {
+      this.getCustomers(input);
+    }
+  });
   }
 }
