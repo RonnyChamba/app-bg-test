@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, debounceTime, distinctUntilChanged, filter, of, tap } from 'rxjs';
 import { CustomerRespDTO } from 'src/app/model/customer.mode';
 import { GenericResponse } from 'src/app/model/generic-response.model';
@@ -14,7 +15,9 @@ export class ClientesComponent {
 
   customers: CustomerRespDTO[] = [];
   searchControl = new FormControl('');
-  constructor(private readonly customerService: ClienteService) { }
+  constructor(private readonly customerService: ClienteService,
+    private readonly modalService: NgbModal
+  ) { }
 
   ngOnInit(): void {
     this.getCustomers();
@@ -23,34 +26,42 @@ export class ClientesComponent {
 
   getCustomers(filter: string = ''): void {
     this.customerService.getClientes(filter)
-    .pipe(
-      tap((response: GenericResponse<CustomerRespDTO[]>) => {
-        console.log('response', response);
-        this.customers = response.data;
-      }),
-      catchError((error) => {
-        console.error('Error fetching customers', error);
-        return of(null);
-      }
-    )
-    ).subscribe();
+      .pipe(
+        tap((response: GenericResponse<CustomerRespDTO[]>) => {
+          console.log('response', response);
+          this.customers = response.data;
+        }),
+        catchError((error) => {
+          console.error('Error fetching customers', error);
+          return of(null);
+        }
+        )
+      ).subscribe();
   }
 
   applyFilter(): void {
 
     this.searchControl.valueChanges
-  .pipe(
-    debounceTime(300), // espera 300ms después de dejar de escribir
-    distinctUntilChanged() // solo si cambia el valor
-  )
-  .subscribe(value => {
-    const input = value?.trim() ?? '';
+      .pipe(
+        debounceTime(300), // espera 300ms después de dejar de escribir
+        distinctUntilChanged() // solo si cambia el valor
+      )
+      .subscribe(value => {
+        const input = value?.trim() ?? '';
 
-    if (input.length === 0) {
-      this.getCustomers();
-    } else if (input.length >= 3) {
-      this.getCustomers(input);
-    }
-  });
+        if (input.length === 0) {
+          this.getCustomers();
+        } else if (input.length >= 3) {
+          this.getCustomers(input);
+        }
+      });
+  }
+
+  onClikOpenModalCreate(){
+    console.log('onClikOpenModalCreate');
+    const modalRef = this.modalService.open('modalCreate', { centered: true, size: 'lg' });
+    modalRef.componentInstance.name = 'World';
+    modalRef.componentInstance.closeBtnName = 'Close';
+    modalRef.componentInstance.title = 'Crear cliente';
   }
 }
