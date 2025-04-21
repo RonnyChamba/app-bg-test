@@ -12,3 +12,9 @@ export interface UsuarioReqDTO {
     city: string;
     userReqDTO: UsuarioReqDTO;
   }
+
+  export interface CompanySimpleReqDTO {
+    fullName: string;
+    porcentajeIva: number;
+    city: string;
+  }

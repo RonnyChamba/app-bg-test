@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <app-navbar></app-navbar>
+    <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Configuraci&oacute;n datos Empresa</span>
+
+        </div>
+        <div class="card-body">
+            <form [formGroup]="customerForm" (ngSubmit)="updateData()">
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Nombre Comercial</label>
+                    <input type="text" class="form-control" id="fullName" formControlName="fullName">
+                    <div class="text-danger"
+                        *ngIf="customerForm.get('fullName')?.touched && customerForm.get('fullName')?.invalid">
+                        El nombre es obligatorio
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="porcentajeIva" class="form-label">Porcntaje Iva</label>
+                    <input type="number" class="form-control" id="porcentajeIva" formControlName="porcentajeIva">
+                    <div class="text-danger"
+                        *ngIf="customerForm.get('porcentajeIva')?.touched && customerForm.get('porcentajeIva')?.invalid">
+                        El Porcentaje es obligatorio
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="city" class="form-label">Ciudad</label>
+                    <input type="text" class="form-control" id="city" formControlName="city">
+                    <div class="text-danger"
+                        *ngIf="customerForm.get('city')?.touched && customerForm.get('city')?.invalid">
+                        La ciudad es obligatoria
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="!customerForm.valid">{{buttonText}}</button>
+            </form>
+
+
+        </div>
+    </div>
+</div>
