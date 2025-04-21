@@ -11,6 +11,7 @@ import { HelperService } from 'src/app/services/helper.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { SelectProductComponent } from '../select-product/select-product.component';
 import { FacturaService } from 'src/app/services/factura.service';
+import { CompanyService } from 'src/app/services/company.service';
 
 @Component({
   selector: 'app-factura-form',
@@ -42,6 +43,8 @@ export class FacturaFormComponent {
     private readonly customerService: ClienteService,
     private readonly invoiceService: FacturaService,
     private readonly helperService: HelperService,
+     private readonly companyService: CompanyService
+     ,
   ) { }
 
   ngOnInit(): void {
@@ -51,13 +54,14 @@ export class FacturaFormComponent {
     this.getPayForms();
     this.disabledFields();
     this.subscribeToFormChanges();
+    this.obtenerPorcentajeIva();
   }
 
   generateFormGroup() {
     this.invoiceForm = this.fb.group({
       createAt: [new Date().toISOString().substring(0, 10), Validators.required],
       statusPay: ['Pagado', Validators.required],
-      porcentajeIva: [12, Validators.required],
+      porcentajeIva: [this.porcentajeIva, Validators.required],
       ivaValue: [0],
       subTotal: [0],
       total: [0],
@@ -328,5 +332,24 @@ export class FacturaFormComponent {
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const y = date.getFullYear();
     return `${d}/${m}/${y}`;
+  }
+
+  obtenerPorcentajeIva() {
+    this.companyService.getCompanyUserLogin()
+      .pipe(
+        tap((response: GenericResponse<any>) => {
+          console.log('response', response);
+          this.porcentajeIva = response.data.porcentajeIva;
+          this.invoiceForm.patchValue({
+            porcentajeIva: this.porcentajeIva
+          });
+        }),
+        catchError((error) => {
+          console.error('Error fetching company data', error);
+          alert('Error fetching company data');
+          return of(null);
+        }
+        )
+      ).subscribe();
   }
 }
