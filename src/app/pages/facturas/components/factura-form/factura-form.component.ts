@@ -4,7 +4,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, of, tap } from 'rxjs';
 import { CustomerRespDTO } from 'src/app/model/customer.mode';
 import { GenericResponse } from 'src/app/model/generic-response.model';
-import { DetailsInvoiceReqDTO, PayFormRespDTO, SelectOption } from 'src/app/model/response/invoice.model';
+import { DetailsInvoiceReqDTO, InvoiceDetail, InvoiceFullRespDTO, PayFormRespDTO, SelectOption } from 'src/app/model/response/invoice.model';
 import { UsuarioRespDTO } from 'src/app/model/response/user-respdto.model';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { HelperService } from 'src/app/services/helper.service';
@@ -22,6 +22,7 @@ export class FacturaFormComponent {
 
   invoiceForm!: FormGroup;
 
+  invoiceEdit!: InvoiceFullRespDTO;
   customers: CustomerRespDTO[] = [];
   users: SelectOption[] = [];
   payForms: PayFormRespDTO[] = [];
@@ -43,8 +44,8 @@ export class FacturaFormComponent {
     private readonly customerService: ClienteService,
     private readonly invoiceService: FacturaService,
     private readonly helperService: HelperService,
-     private readonly companyService: CompanyService
-     ,
+    private readonly companyService: CompanyService
+    ,
   ) { }
 
   ngOnInit(): void {
@@ -55,6 +56,9 @@ export class FacturaFormComponent {
     this.disabledFields();
     this.subscribeToFormChanges();
     this.obtenerPorcentajeIva();
+    if (this.invoiceEdit) {
+      this.setInvoiceEdit(this.invoiceEdit);
+    }
   }
 
   generateFormGroup() {
@@ -72,6 +76,43 @@ export class FacturaFormComponent {
       invoicePayForm: this.fb.array([]),
       details: this.fb.array([])
     });
+  }
+
+  setInvoiceEdit(invoice: InvoiceFullRespDTO) {
+    this.invoiceEdit = invoice;
+    this.titleForm = 'Editar Factura';
+    console.log('invoiceEdit', invoice);
+    this.invoiceForm.patchValue({
+      createAt: invoice.createAt,
+      statusPay: invoice.statusPay,
+      porcentajeIva: invoice.porcentajeIva,
+      ivaValue: invoice.ivaValue,
+      subTotal: invoice.subTotal,
+      total: invoice.total,
+      customerId: invoice.customerId,
+      telefono: invoice.cellPhoneCustomer,
+      email: invoice.emailCustomer,
+      userId: invoice.userId
+    });
+    this.setPayFormEdit(invoice);
+
+    // tiene qye llamarse antes de setDetails
+    this.porcentajeIva = invoice.porcentajeIva;
+    this.processDetails(invoice.details);
+
+  }
+
+  setPayFormEdit(invoice: InvoiceFullRespDTO) {
+
+    console.log('asignado las formas de pago');
+    invoice.invoicePayForm.forEach((payForm) => {
+      this.invoicePayForm.push(this.fb.group({
+        payFormId: [payForm.payFormId, Validators.required],
+        description: [payForm.description],
+        total: [payForm.total, Validators.required]
+      }));
+    }
+    );
   }
 
   subscribeToFormChanges() {
@@ -152,9 +193,9 @@ export class FacturaFormComponent {
           //   description: `${customer.description}`,
           // }));
 
-          // add the pay forms to the form array
-          this.addFormaPago();
-          console.log('payForms', this.payForms);
+          if (!this.invoiceEdit) {
+            this.addFormaPago();
+          }
         }),
         catchError((error) => {
           console.error('Error fetching pay forms', error);
@@ -224,7 +265,7 @@ export class FacturaFormComponent {
     this.calculateTotals();
 
     // asignar el valor de los detalles al formulario
-  
+
     this.setDetails(this.detaist);
     // console.log('detaist', this.invoiceForm);
   }
@@ -252,12 +293,12 @@ export class FacturaFormComponent {
     // por cada elemento, creas un FormGroup y lo agregas
     data.forEach(d => {
       this.details.push(this.fb.group({
-        productId:   [ d.productId ],
-        description: [ d.description ],
-        code:        [ d.code ],
-        price:       [ d.price ],
-        amount:      [ d.amount ],
-        subtotal:    [ d.subtotal ]
+        productId: [d.productId],
+        description: [d.description],
+        code: [d.code],
+        price: [d.price],
+        amount: [d.amount],
+        subtotal: [d.subtotal]
       }));
     });
   }
@@ -267,7 +308,7 @@ export class FacturaFormComponent {
 
     this.setDescriptionPayForm();
     if (this.invoiceForm.valid) {
-  
+
       // valdar si hay detalles
       if (this.detaist.length === 0) {
         alert('No hay productos seleccionados');
@@ -287,8 +328,20 @@ export class FacturaFormComponent {
       invoice.createAt = this.formatDate(new Date());
 
       console.log('invoice', invoice);
+      if (this.invoiceEdit) {
+        this.updateNewInvoice(invoice, this.invoiceEdit.id);
+      } else {
+        this.generateNewInvoice(invoice);
+      }
 
-      this.invoiceService.saveInvoice(invoice)
+
+    } else {
+      alert('Formulario inválido');
+    }
+  }
+
+  generateNewInvoice(invoice: any) {
+    this.invoiceService.saveInvoice(invoice)
       .pipe(
         tap((response: GenericResponse<string>) => {
           console.log('response', response);
@@ -302,12 +355,23 @@ export class FacturaFormComponent {
           return of(null);
         })
       ).subscribe();
-    }else {
-      alert('Formulario inválido');
-    }
+  }
 
-
-    
+  updateNewInvoice(invoice: any, id: number) {
+    this.invoiceService.updateInvoice(invoice, id)
+      .pipe(
+        tap((response: GenericResponse<string>) => {
+          console.log('response', response);
+          alert('Factura actualizar exitosamente');
+          this.activeModal.close('OK');
+        }),
+        catchError((error) => {
+          console.error('Error al actaualizar la factura', error);
+          alert('Error al actualizar la factura');
+          this.activeModal.close('ERROR');
+          return of(null);
+        })
+      ).subscribe();
   }
 
   setDescriptionPayForm() {

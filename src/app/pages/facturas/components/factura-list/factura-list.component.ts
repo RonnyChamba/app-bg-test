@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, of, tap } from 'rxjs';
 import { GenericResponse } from 'src/app/model/generic-response.model';
-import { InvoiceFilterType, InvoiceRespDTO } from 'src/app/model/response/invoice.model';
+import { InvoiceFilterType, InvoiceFullRespDTO, InvoiceRespDTO } from 'src/app/model/response/invoice.model';
 import { FacturaService } from 'src/app/services/factura.service';
+import { FacturaFormComponent } from '../factura-form/factura-form.component';
 
 @Component({
   selector: 'app-factura-list',
@@ -64,7 +65,7 @@ export class FacturaListComponent {
   }
 
 
-  getInvoices(params?: any ): void {
+  getInvoices(params?: any): void {
     this.invoiceService.getInvoices(params)
       .pipe(
         tap((response: GenericResponse<InvoiceRespDTO[]>) => {
@@ -121,6 +122,36 @@ export class FacturaListComponent {
     const params = this.filterForm.value;
     console.log('Buscar con:', params);
     this.getInvoices(params);
+  }
+
+  onClickEditarInvoice(invoiceResp: InvoiceRespDTO): void {
+
+    console.log('Editar invoice', invoiceResp);
+    this.invoiceService.getInvoice(invoiceResp.id)
+      .pipe(
+        tap((response: GenericResponse<InvoiceFullRespDTO>) => {
+          console.log('response', response);
+          this.openModalEditInvoice(response.data);
+        }),
+        catchError((error) => {
+          console.error('Error obtener invoice', error);
+          return of(null);
+        }
+        )
+      ).subscribe();
+  }
+
+  openModalEditInvoice(invoiceData: InvoiceFullRespDTO): void {
+    const modalRef = this.modalService.open(FacturaFormComponent, { size: 'lg', centered: true });
+    modalRef.componentInstance.invoiceEdit = invoiceData;
+
+    modalRef.result.then((result) => {
+      if (result === 'OK') {
+        this.getInvoices();
+      }
+    }).catch((error) => {
+      console.log('Modal cerrado sin acción:', error);
+    });
   }
 
 

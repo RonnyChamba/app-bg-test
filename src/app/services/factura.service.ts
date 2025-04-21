@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { GenericResponse } from '../model/generic-response.model';
 import { Observable } from 'rxjs';
-import { InvoiceRespDTO } from '../model/response/invoice.model';
+import { InvoiceFullRespDTO, InvoiceRespDTO } from '../model/response/invoice.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,24 +28,38 @@ export class FacturaService {
     return this.httpClient.get<GenericResponse<InvoiceRespDTO[]>>(url);
   }
 
-   saveInvoice(data: any): Observable<GenericResponse<string>> {
-  
-      const request = {
-        origin: 'AppAngular',
-        payload: data
-      };
-      return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/invoices`, request);
-    }
 
-    deleteInvoice(id: number): Observable<GenericResponse<string>> {
-      return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/invoices/${id}`);
-    }
+  getInvoice(id: number): Observable<GenericResponse<InvoiceFullRespDTO>> {
+    return this.httpClient.get<GenericResponse<InvoiceFullRespDTO>>(`${this.urlMicro}/invoices/${id}`);
+  }
 
-    getPdf(id: number): Observable<Blob> {
-      return this.httpClient.get(
-        `${this.urlMicro}/invoices/${id}/report-pdf`,
-        { responseType: 'blob' }
-      );
-    }
-  
+  saveInvoice(data: any): Observable<GenericResponse<string>> {
+
+    const request = {
+      origin: 'AppAngular',
+      payload: data
+    };
+    return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/invoices`, request);
+  }
+
+  updateInvoice(data: any, id: number): Observable<GenericResponse<string>> {
+
+    const request = {
+      origin: 'AppAngular',
+      payload: data
+    };
+    return this.httpClient.put<GenericResponse<string>>(`${this.urlMicro}/invoices/${id}`, request);
+  }
+
+  deleteInvoice(id: number): Observable<GenericResponse<string>> {
+    return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/invoices/${id}`);
+  }
+
+  getPdf(id: number): Observable<Blob> {
+    return this.httpClient.get(
+      `${this.urlMicro}/invoices/${id}/report-pdf`,
+      { responseType: 'blob' }
+    );
+  }
+
 }
