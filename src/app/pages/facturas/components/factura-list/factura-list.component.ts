@@ -18,6 +18,7 @@ export class FacturaListComponent {
   invoiceFilterType: InvoiceFilterType[] = [
     { id: 'CustomerName', description: 'Nombre Cliente' },
     { id: 'InvoiceNumber', description: 'Numero Factura' },
+    { id: 'RangeDate', description: 'Rango Fechas' },
     { id: 'InvoiceTotal', description: 'Total Factura' }
   ];
 
@@ -31,6 +32,8 @@ export class FacturaListComponent {
 
   customers: InvoiceRespDTO[] = [];
   isShowOperatorFilter = false;
+  isShowDateFilter = false;
+  isShowTextFilter = true;
   constructor(private readonly invoiceService: FacturaService,
     private readonly modalService: NgbModal,
     private fb: FormBuilder
@@ -47,7 +50,9 @@ export class FacturaListComponent {
     this.filterForm = this.fb.group({
       filterType: [null],
       operator: [null],
-      searchText: ['']
+      searchText: [''],
+      startDate: [null],
+      endDate: [null],
     });
   }
 
@@ -60,12 +65,27 @@ export class FacturaListComponent {
       } else {
         this.filterForm.get('operator')?.setValue(null);
       }
+
+      this.isShowDateFilter = selectedValue === 'RangeDate';
+      if (this.isShowDateFilter) {
+        this.filterForm.get('startDate')?.setValue(null);
+        this.filterForm.get('endDate')?.setValue(null);
+      }
+      this.isShowTextFilter = selectedValue !== 'RangeDate';
+      if (this.isShowTextFilter) {
+        this.filterForm.get('searchText')?.setValue('');
+      }
+      console.log('isShowOperatorFilter:', this.isShowOperatorFilter);
+      console.log('isShowDateFilter:', this.isShowDateFilter);
+      console.log('isShowTextFilter:', this.isShowTextFilter);
     }
     );
   }
 
 
   getInvoices(params?: any): void {
+
+    this.setFormatWhenFilterRangeDat(params);
     this.invoiceService.getInvoices(params)
       .pipe(
         tap((response: GenericResponse<InvoiceRespDTO[]>) => {
@@ -83,6 +103,24 @@ export class FacturaListComponent {
   reloadTable(): void {
     this.getInvoices();
   }
+
+setFormatWhenFilterRangeDat(params: any): void {
+
+  if (params?.filterType === 'RangeDate') {
+     
+    const startDate = this.filterForm.get('startDate')?.value;
+    const endDate = this.filterForm.get('endDate')?.value;
+    if (startDate && endDate) {
+
+      const startDateStr = this.formatDateToDDMMYYYY(startDate);
+      const endDateStr = this.formatDateToDDMMYYYY(endDate);
+      params.startDate = startDateStr;
+      params.endDate = endDateStr;
+
+      params.searchText = startDateStr + '|' + endDateStr;
+    }
+  }
+}
 
   onClickDeleteInvoice(invoiceResp: InvoiceRespDTO): void {
 
@@ -154,5 +192,10 @@ export class FacturaListComponent {
     });
   }
 
+  formatDateToDDMMYYYY(dateStr: string): string {
+    if (!dateStr) return '';
 
+    const [year, month, day] = dateStr.split('-');
+    return `${day}/${month}/${year}`;
+  }
 }

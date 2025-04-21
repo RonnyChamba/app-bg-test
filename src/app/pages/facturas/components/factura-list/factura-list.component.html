@@ -16,17 +16,34 @@
             {{ op.description }}
           </option>
         </select>
+
+
       </div>
   
       <!-- Input + Botón a la derecha -->
       <div class="input-group w-50">
-        <input
+        <input *ngIf="isShowTextFilter"
           type="text"
           class="form-control"
           placeholder="Buscar factura"
           aria-label="Buscar factura"
           formControlName="searchText"
         >
+
+        <div *ngIf="isShowDateFilter" class="d-flex gap-2">
+          <input
+          type="date"
+          class="form-control"
+          formControlName="startDate"
+          placeholder="Fecha desde"
+        >
+        <input
+          type="date"
+          class="form-control"
+          formControlName="endDate"
+          placeholder="Fecha hasta"
+        >
+        </div>
         <button class="btn btn-primary" type="submit">
           Buscar
         </button>

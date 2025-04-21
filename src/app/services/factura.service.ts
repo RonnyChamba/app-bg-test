@@ -23,8 +23,7 @@ export class FacturaService {
     const invoiceFilterType = params?.filterType ? params.filterType : '';
     const comparisonOperator = params?.operator ? params.operator : '';
     const url = `${this.urlMicro}/invoices?valueFilter=${filter}&invoiceFilterType=${invoiceFilterType}&comparisonOperator=${comparisonOperator}`;
-
-
+    console.log('url', url);
     return this.httpClient.get<GenericResponse<InvoiceRespDTO[]>>(url);
   }
 
