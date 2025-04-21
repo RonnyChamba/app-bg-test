@@ -5,48 +5,51 @@
     </div>
     <div class="card-body">
         <form [formGroup]="invoiceForm" (ngSubmit)="saveInvoice()">
-            <div class="mb-3">
-                <label>Cliente</label>
-                <select class="form-select" formControlName="customerId">
-                    <option *ngFor="let cliente of customers" [value]="cliente.id">
-                        {{ cliente.fullName }}
-                    </option>
-                </select>
+            <div class="row bg-red">
+                <div class="col-4 mb-3">
+                    <label>Cliente</label>
+                    <select class="form-select" formControlName="customerId">
+                        <option *ngFor="let cliente of customers" [value]="cliente.id">
+                            {{ cliente.fullName }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label>Telefono</label>
+                    <input type="text" class="form-control" id="telefono" formControlName="telefono">
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label>Email</label>
+                    <input type="text" class="form-control" id="email" formControlName="email">
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label>Vendedor</label>
-                <select class="form-select" formControlName="userId">
-                    <option *ngFor="let user of users" [value]="user.id">
-                        {{ user.description }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label>Telefono</label>
-                <input type="text" class="form-control" id="telefono" formControlName="telefono">
-            </div>
-
-            <div class="mb-3">
-                <label>Email</label>
-                <input type="text" class="form-control" id="email" formControlName="email">
-            </div>
-
-            <div class="mb-3">
-                <label>Fecha</label>
-                <input type="text" class="form-control" id="createAt" formControlName="createAt">
-            </div>
-
-            <div class="mb-3">
-                <label>Estado Pago</label>
-                <select class="form-select" formControlName="statusPay">
-
-
-                    <option *ngFor="let user of payStatus" [value]="user.description">
-                        {{ user.description }}
-                    </option>
-                </select>
+            <div class="row">
+                <div class="col-4 mb-3">
+                    <label>Vendedor</label>
+                    <select class="form-select" formControlName="userId">
+                        <option *ngFor="let user of users" [value]="user.id">
+                            {{ user.description }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-4 mb-3">
+                    <label>Fecha</label>
+                    <input type="text" class="form-control" id="createAt" formControlName="createAt">
+                </div>
+                <div class="col-4 mb-3">
+                    <label>Estado Pago</label>
+                    <select class="form-select" formControlName="statusPay">
+    
+    
+                        <option *ngFor="let user of payStatus" [value]="user.description">
+                            {{ user.description }}
+                        </option>
+                    </select>
+                </div>
+    
             </div>
 
             <div class="mb-3">
@@ -70,7 +73,7 @@
             <!-- Aquí va el modal o sección para agregar productos -->
             <div class="card mb-4">
                 <div class="card-header fw-bold">
-                    <button class="btn btn-info" type="button"  (click)="openModalProducts()">Agregar Producto</button>
+                    <button class="btn btn-info" type="button" (click)="openModalProducts()">Agregar Producto</button>
                 </div>
 
             </div>
