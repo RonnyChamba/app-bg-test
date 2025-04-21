@@ -25,6 +25,7 @@ import { FacturaListComponent } from './pages/facturas/components/factura-list/f
 import { FacturaFormComponent } from './pages/facturas/components/factura-form/factura-form.component';
 import { SelectProductComponent } from './pages/facturas/components/select-product/select-product.component';
 import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
+import { ClientesListComponent } from './pages/clientes/components/clientes-list/clientes-list.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ConfiguracionComponent } from './pages/configuracion/configuracion.comp
     FacturaFormComponent,
     SelectProductComponent,
     ConfiguracionComponent,
+    ClientesListComponent,
   ],
   imports: [
     BrowserModule,

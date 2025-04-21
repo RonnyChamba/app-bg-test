@@ -1,0 +1,35 @@
+<div class="d-flex  justify-content-center align-items-center">
+    <input type="text" class="form-control w-50" placeholder="Buscar cliente por nombre"
+        aria-label="Buscar cliente" [formControl]="searchControl">
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Tel&eacute;fono</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Direcci&oacute;n</th>
+            <th scope="col">Estado</th>
+            <th scope="col">F. Creaci&oacute;n</th>
+            <th scope="col">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cliente of customers; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ cliente.fullName }}</td>
+            <td>{{ cliente.cellPhone }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.address }}</td>
+            <td>
+                <span class="badge bg-success">{{cliente.status}}</span>
+            </td>
+            <td>{{ cliente.createAt | date: 'dd/MM/yyyy' }}</td>
+            <td>
+                <button class="btn btn-warning me-2" (click)="onClickOpenModalEdit(cliente)">Editar</button>
+                <button class="btn btn-danger" (click)="onClickDelete(cliente)">Eliminar</button>
+        </tr>
+
+    </tbody>
+</table>
