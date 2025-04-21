@@ -17,4 +17,14 @@ export class FacturaService {
   getInvoices(filter: string): Observable<GenericResponse<InvoiceRespDTO[]>> {
     return this.httpClient.get<GenericResponse<InvoiceRespDTO[]>>(`${this.urlMicro}/invoices?name=${filter}`);
   }
+
+   saveInvoice(data: any): Observable<GenericResponse<string>> {
+  
+      const request = {
+        origin: 'AppAngular',
+        payload: data
+      };
+      return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/invoices`, request);
+    }
+  
 }

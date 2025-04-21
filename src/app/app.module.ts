@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import {  HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
@@ -22,6 +22,8 @@ import { ProductoFormComponent } from './pages/productos/components/producto-for
 import { CompanyFormComponent } from './auth/components/company-form/company-form.component';
 import { FacturasComponent } from './pages/facturas/facturas.component';
 import { FacturaListComponent } from './pages/facturas/components/factura-list/factura-list.component';
+import { FacturaFormComponent } from './pages/facturas/components/factura-form/factura-form.component';
+import { SelectProductComponent } from './pages/facturas/components/select-product/select-product.component';
 
 @NgModule({
   declarations: [
@@ -41,13 +43,16 @@ import { FacturaListComponent } from './pages/facturas/components/factura-list/f
     CompanyFormComponent,
     FacturasComponent,
     FacturaListComponent,
+    FacturaFormComponent,
+    SelectProductComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [
     {

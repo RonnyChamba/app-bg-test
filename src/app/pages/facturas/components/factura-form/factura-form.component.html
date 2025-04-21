@@ -1,0 +1,127 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title">{{titleForm}}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="invoiceForm" (ngSubmit)="saveInvoice()">
+            <div class="mb-3">
+                <label>Cliente</label>
+                <select class="form-select" formControlName="customerId">
+                    <option *ngFor="let cliente of customers" [value]="cliente.id">
+                        {{ cliente.fullName }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Vendedor</label>
+                <select class="form-select" formControlName="userId">
+                    <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.description }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Telefono</label>
+                <input type="text" class="form-control" id="telefono" formControlName="telefono">
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="text" class="form-control" id="email" formControlName="email">
+            </div>
+
+            <div class="mb-3">
+                <label>Fecha</label>
+                <input type="text" class="form-control" id="createAt" formControlName="createAt">
+            </div>
+
+            <div class="mb-3">
+                <label>Estado Pago</label>
+                <select class="form-select" formControlName="statusPay">
+
+
+                    <option *ngFor="let user of payStatus" [value]="user.description">
+                        {{ user.description }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label>Formas de pago</label>
+                <div formArrayName="invoicePayForm">
+                    <div *ngFor="let control of invoicePayForm.controls; let i = index" [formGroupName]="i"
+                        class="d-flex gap-2 mb-2">
+                        <select class="form-select" formControlName="payFormId">
+                            <option *ngFor="let option of payForms" [value]="option.id">
+                                {{ option.description }}
+                            </option>
+                        </select>
+                        <input type="number" formControlName="total" placeholder="Valor" class="form-control" />
+                        <button type="button" class="btn btn-danger btn-sm" (click)="removeFormaPago(i)">X</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm mt-1" (click)="addFormaPago()">+ Forma de
+                    Pago</button>
+            </div>
+
+            <!-- Aquí va el modal o sección para agregar productos -->
+            <div class="card mb-4">
+                <div class="card-header fw-bold">
+                    <button class="btn btn-info" type="button"  (click)="openModalProducts()">Agregar Producto</button>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-header fw-bold">
+                    Detalles de la Factura
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let product of detaist; let i = index">
+                                <td>{{ product.code }}</td>
+                                <td>{{ product.description }}</td>
+                                <td>{{ product.amount }}</td>
+                                <td>{{ product.price | currency: 'USD' }}</td>
+                                <td>{{ product.subtotal | currency: 'USD' }}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" (click)="removeProduct(i)">Eliminar</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <!-- Totales -->
+                    <div class="p-3 d-flex flex-column align-items-end gap-2 bg-light border-top">
+                        <div><strong>Subtotal:</strong> {{ subtotal | currency: 'USD' }}</div>
+                        <div><strong>Porcentaje IVA:</strong> {{ porcentajeIva }}%</div>
+                        <div><strong>Valor IVA:</strong> {{ valorIva | currency: 'USD' }}</div>
+                        <div class="fw-bold fs-5"><strong>Total:</strong> {{ total | currency: 'USD' }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-secondary ms-2" (click)="activeModal.dismiss()">Cancelar</button>
+            </div>
+
+        </form>
+    </div>
+</div>

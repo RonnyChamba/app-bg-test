@@ -37,5 +37,9 @@ export class FacturaListComponent {
       ).subscribe();
   }
 
+  reloadTable(): void {
+    this.getInvoices();
+  }
+
 
 }
