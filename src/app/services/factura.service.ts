@@ -30,5 +30,12 @@ export class FacturaService {
     deleteInvoice(id: number): Observable<GenericResponse<string>> {
       return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/invoices/${id}`);
     }
+
+    getPdf(id: number): Observable<Blob> {
+      return this.httpClient.get(
+        `${this.urlMicro}/invoices/${id}/report-pdf`,
+        { responseType: 'blob' }
+      );
+    }
   
 }

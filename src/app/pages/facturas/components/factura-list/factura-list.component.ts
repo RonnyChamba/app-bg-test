@@ -41,7 +41,7 @@ export class FacturaListComponent {
     this.getInvoices();
   }
 
-  onClickDeleteInvoice(invoiceResp : InvoiceRespDTO): void {
+  onClickDeleteInvoice(invoiceResp: InvoiceRespDTO): void {
 
     if (confirm(`¿Está seguro de eliminar la factura # ${invoiceResp.invoiceNumber}?`)) {
       this.invoiceService.deleteInvoice(invoiceResp.id)
@@ -59,6 +59,20 @@ export class FacturaListComponent {
           )
         ).subscribe();
     }
+  }
+
+  onClickPdfInvoice(invoiceResp: InvoiceRespDTO): void {
+
+    this.invoiceService.getPdf(invoiceResp.id).subscribe({
+      next: blob => {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');      // abrir en nueva pestaña
+      },
+      error: err => {
+        console.error('Error al cargar PDF', err);
+      }
+    });
+
   }
 
 
