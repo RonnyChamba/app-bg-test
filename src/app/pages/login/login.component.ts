@@ -42,7 +42,7 @@ export class LoginComponent {
         tap((response) => {
           if (response && response.data) {
             this.tokenService.setToken(response.data);
-            this.router.navigate(['/home']);
+            this.router.navigate(['/facturas']);
           } else {
             console.error('Token not found in response');
             alert('Login failed: Token not found');
