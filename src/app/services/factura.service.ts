@@ -26,5 +26,9 @@ export class FacturaService {
       };
       return this.httpClient.post<GenericResponse<string>>(`${this.urlMicro}/invoices`, request);
     }
+
+    deleteInvoice(id: number): Observable<GenericResponse<string>> {
+      return this.httpClient.delete<GenericResponse<string>>(`${this.urlMicro}/invoices/${id}`);
+    }
   
 }

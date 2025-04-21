@@ -41,5 +41,25 @@ export class FacturaListComponent {
     this.getInvoices();
   }
 
+  onClickDeleteInvoice(invoiceResp : InvoiceRespDTO): void {
+
+    if (confirm(`¿Está seguro de eliminar la factura # ${invoiceResp.invoiceNumber}?`)) {
+      this.invoiceService.deleteInvoice(invoiceResp.id)
+        .pipe(
+          tap((response: GenericResponse<string>) => {
+            console.log('response', response);
+            alert(`Factura # ${invoiceResp.invoiceNumber} eliminada correctamente`);
+            this.getInvoices();
+          }),
+          catchError((error) => {
+            console.error('Error deleting invoice', error);
+            alert(`Error eliminando la factura # ${invoiceResp.invoiceNumber}`);
+            return of(null);
+          }
+          )
+        ).subscribe();
+    }
+  }
+
 
 }

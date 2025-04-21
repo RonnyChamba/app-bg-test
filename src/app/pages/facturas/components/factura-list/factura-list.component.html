@@ -12,6 +12,7 @@
             <th scope="col">Estado Pago</th>
             <th scope="col">F. Creaci&oacute;n</th>
             <th scope="col">Total</th>
+            <th scope="col">Acciones</th>
          
         </tr>
     </thead>
@@ -27,6 +28,9 @@
               </td>
             <td>{{ cliente.createAt | date: 'dd/MM/yyyy' }}</td>
             <td>{{ cliente.total | currency: 'USD' }}</td>
+            <td>
+                <button class="btn btn-danger" (click)="onClickDeleteInvoice(cliente)">Eliminar</button>
+            </td>
            
         </tr>
 
