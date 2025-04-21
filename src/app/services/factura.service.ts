@@ -14,8 +14,18 @@ export class FacturaService {
   constructor(private readonly httpClient: HttpClient) {
   }
 
-  getInvoices(filter: string): Observable<GenericResponse<InvoiceRespDTO[]>> {
-    return this.httpClient.get<GenericResponse<InvoiceRespDTO[]>>(`${this.urlMicro}/invoices?name=${filter}`);
+  getInvoices(params: any): Observable<GenericResponse<InvoiceRespDTO[]>> {
+
+
+    // example  params ?valueFilter=0000000002&invoiceFilterType=InvoiceNumber&comparisonOperator=EqualTo
+
+    const filter = params?.searchText ? params.searchText : '';
+    const invoiceFilterType = params?.filterType ? params.filterType : '';
+    const comparisonOperator = params?.operator ? params.operator : '';
+    const url = `${this.urlMicro}/invoices?valueFilter=${filter}&invoiceFilterType=${invoiceFilterType}&comparisonOperator=${comparisonOperator}`;
+
+
+    return this.httpClient.get<GenericResponse<InvoiceRespDTO[]>>(url);
   }
 
    saveInvoice(data: any): Observable<GenericResponse<string>> {

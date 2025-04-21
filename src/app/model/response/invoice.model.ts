@@ -29,3 +29,9 @@ export interface InvoiceRespDTO {
     amount: number,
     subtotal: number,
   }
+
+  export interface InvoiceFilterType {
+
+    id: string;
+    description: string;  
+  }

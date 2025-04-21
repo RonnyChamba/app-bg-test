@@ -1,7 +1,41 @@
-<div class="d-flex  justify-content-center align-items-center">
-    <input type="text" class="form-control w-50" placeholder="Buscar factura"
-        aria-label="Buscar factura">
-</div>
+<form [formGroup]="filterForm" (ngSubmit)="onSearch()">
+    <div class="d-flex justify-content-center align-items-center">
+  
+      <!-- Selects apilados a la izquierda -->
+      <div class="d-flex flex-column me-3 gap-2">
+        <select class="form-select" formControlName="filterType">
+          <option [ngValue]="null" disabled selected>Tipo de filtro</option>
+          <option *ngFor="let ft of invoiceFilterType" [value]="ft.id">
+            {{ ft.description }}
+          </option>
+        </select>
+  
+        <select class="form-select" formControlName="operator" *ngIf="isShowOperatorFilter">
+          <option [ngValue]="null" disabled selected>Operador</option>
+          <option *ngFor="let op of comparisonOperatorEnum" [value]="op.id">
+            {{ op.description }}
+          </option>
+        </select>
+      </div>
+  
+      <!-- Input + Botón a la derecha -->
+      <div class="input-group w-50">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar factura"
+          aria-label="Buscar factura"
+          formControlName="searchText"
+        >
+        <button class="btn btn-primary" type="submit">
+          Buscar
+        </button>
+      </div>
+  
+    </div>
+  </form>
+  
+
 <table class="table">
     <thead>
         <tr>
@@ -13,7 +47,7 @@
             <th scope="col">F. Creaci&oacute;n</th>
             <th scope="col">Total</th>
             <th scope="col">Acciones</th>
-         
+
         </tr>
     </thead>
     <tbody>
@@ -25,14 +59,14 @@
 
             <td [ngClass]="cliente.statusPay === 'Pagado' ? 'text-success' : 'text-danger'">
                 {{ cliente.statusPay }}
-              </td>
+            </td>
             <td>{{ cliente.createAt | date: 'dd/MM/yyyy' }}</td>
             <td>{{ cliente.total | currency: 'USD' }}</td>
             <td>
                 <button class="btn btn-danger mr" (click)="onClickDeleteInvoice(cliente)">Eliminar</button>
                 <button class="btn btn-danger" (click)="onClickPdfInvoice(cliente)">Pdf</button>
             </td>
-           
+
         </tr>
 
     </tbody>

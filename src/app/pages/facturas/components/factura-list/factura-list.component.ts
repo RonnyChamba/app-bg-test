@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, of, tap } from 'rxjs';
 import { GenericResponse } from 'src/app/model/generic-response.model';
-import { InvoiceRespDTO } from 'src/app/model/response/invoice.model';
+import { InvoiceFilterType, InvoiceRespDTO } from 'src/app/model/response/invoice.model';
 import { FacturaService } from 'src/app/services/factura.service';
 
 @Component({
@@ -12,18 +13,59 @@ import { FacturaService } from 'src/app/services/factura.service';
 })
 export class FacturaListComponent {
 
+  filterForm!: FormGroup;
+  invoiceFilterType: InvoiceFilterType[] = [
+    { id: 'CustomerName', description: 'Nombre Cliente' },
+    { id: 'InvoiceNumber', description: 'Numero Factura' },
+    { id: 'InvoiceTotal', description: 'Total Factura' }
+  ];
+
+  comparisonOperatorEnum: InvoiceFilterType[] = [
+    { id: 'LessThan', description: 'Menor que' },
+    { id: 'LessThanOrEqual', description: 'Menor igual que' },
+    { id: 'EqualTo', description: 'Igual' },
+    { id: 'GreaterThan', description: 'Mayor que' },
+    { id: 'GreaterThanOrEqual', description: 'Mayor igual que' }
+  ];
+
   customers: InvoiceRespDTO[] = [];
+  isShowOperatorFilter = false;
   constructor(private readonly invoiceService: FacturaService,
-    private readonly modalService: NgbModal
+    private readonly modalService: NgbModal,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
+    this.generateFormGroup();
     this.getInvoices();
+    this.onChangeFilterType();
+
+  }
+
+  generateFormGroup() {
+    this.filterForm = this.fb.group({
+      filterType: [null],
+      operator: [null],
+      searchText: ['']
+    });
+  }
+
+  onChangeFilterType(): void {
+    this.filterForm.get('filterType')?.valueChanges.subscribe((selectedValue: string) => {
+      console.log('Selected filter type:', selectedValue);
+      this.isShowOperatorFilter = selectedValue === 'InvoiceTotal';
+      if (this.isShowOperatorFilter) {
+        this.filterForm.get('operator')?.setValue(null);
+      } else {
+        this.filterForm.get('operator')?.setValue(null);
+      }
+    }
+    );
   }
 
 
-  getInvoices(filter: string = ''): void {
-    this.invoiceService.getInvoices(filter)
+  getInvoices(params?: any ): void {
+    this.invoiceService.getInvoices(params)
       .pipe(
         tap((response: GenericResponse<InvoiceRespDTO[]>) => {
           console.log('response', response);
@@ -73,6 +115,12 @@ export class FacturaListComponent {
       }
     });
 
+  }
+
+  onSearch(): void {
+    const params = this.filterForm.value;
+    console.log('Buscar con:', params);
+    this.getInvoices(params);
   }
 
 
